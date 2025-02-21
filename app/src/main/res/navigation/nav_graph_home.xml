@@ -10,9 +10,9 @@
         android:label="Dashboard" />
 
     <fragment
-        android:id="@+id/aboutFragment"
-        android:name="com.runtime.rebel.instahire.ui.about.AboutFragment"
-        android:label="Profile" />
+        android:id="@+id/boostFragment"
+        android:name="com.runtime.rebel.instahire.ui.about.BoostProfileFragment"
+        android:label="Boost" />
 
     <fragment
         android:id="@+id/settingsFragment"

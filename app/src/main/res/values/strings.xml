@@ -15,4 +15,6 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
     <string name="caps_registration">REGISTRATION</string>
+    <string name="apply">Apply</string>
+    <string name="boost">Boost</string>
 </resources>
