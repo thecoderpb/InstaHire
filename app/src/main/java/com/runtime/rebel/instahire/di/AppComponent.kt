@@ -3,7 +3,7 @@ package com.runtime.rebel.instahire.di
 import com.runtime.rebel.instahire.App
 import com.runtime.rebel.instahire.ui.HomeActivity
 import com.runtime.rebel.instahire.ui.LoginActivity
-import com.runtime.rebel.instahire.ui.about.BoostProfileFragment
+import com.runtime.rebel.instahire.ui.boost.BoostProfileFragment
 import com.runtime.rebel.instahire.ui.home.DashboardFragment
 import com.runtime.rebel.instahire.ui.login.LoginFragment
 import com.runtime.rebel.instahire.ui.registration.RegistrationFragment

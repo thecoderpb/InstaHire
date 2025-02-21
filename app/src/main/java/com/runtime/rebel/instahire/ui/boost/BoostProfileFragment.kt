@@ -1,4 +1,4 @@
-package com.runtime.rebel.instahire.ui.about
+package com.runtime.rebel.instahire.ui.boost
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,13 +15,13 @@ class BoostProfileFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: AboutViewModel
+    private lateinit var viewModel: BoostViewModel
     private lateinit var binding: FragmentAboutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (requireActivity().application as App).appComponent.inject(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[AboutViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[BoostViewModel::class.java]
 
 
     }

@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/boostFragment"
-        android:name="com.runtime.rebel.instahire.ui.about.BoostProfileFragment"
+        android:name="com.runtime.rebel.instahire.ui.boost.BoostProfileFragment"
         android:label="Boost" />
 
     <fragment
