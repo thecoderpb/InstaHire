@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1094295312675",
+    "project_id": "instahire-c4e42",
+    "storage_bucket": "instahire-c4e42.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094295312675:android:59974c898957fc999d9496",
+        "android_client_info": {
+          "package_name": "com.runtime.rebel.instahire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094295312675-44jcv6d5ja3hdsk59el6l0midddctmvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkIWl6DzQg24dlf3c33YB2PSW-NDpLBp8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094295312675-44jcv6d5ja3hdsk59el6l0midddctmvu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

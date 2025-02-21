@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.runtime.rebel.instahire.ui.home.DashboardFragment"
+        android:label="Dashboard" />
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.runtime.rebel.instahire.ui.about.AboutFragment"
+        android:label="Profile" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.runtime.rebel.instahire.ui.settings.SettingsFragment"
+        android:label="Settings" />
+
+</navigation>

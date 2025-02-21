@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">InstaHire</string>
+    <string name="logo">logo</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="register_here">Register here</string>
+    <string name="login">Login</string>
+    <string name="hello_world">Hello World</string>
+    <string name="sign_in">Sign In</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="about">About</string>
+    <string name="settings">Settings</string>
+    <string name="name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="caps_registration">REGISTRATION</string>
+</resources>
