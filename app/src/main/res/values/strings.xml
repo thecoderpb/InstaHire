@@ -17,4 +17,5 @@
     <string name="caps_registration">REGISTRATION</string>
     <string name="apply">Apply</string>
     <string name="boost">Boost</string>
+    <string name="bullet">•</string>
 </resources>

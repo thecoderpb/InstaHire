@@ -1,6 +1,6 @@
 package com.runtime.rebel.instahire.api
 
-import com.runtime.rebel.instahire.model.Account
+import com.runtime.rebel.instahire.model.JobItem
 import retrofit2.http.GET
 import retrofit2.http.Header
 
@@ -10,7 +10,7 @@ import retrofit2.http.Header
 interface OpenAiAPI {
 
     @GET("login")
-    suspend fun login(@Header("Authorization") credentials: String?): Account
+    suspend fun login(@Header("Authorization") credentials: String?): JobItem
 
 }
 

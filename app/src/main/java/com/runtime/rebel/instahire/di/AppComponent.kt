@@ -1,10 +1,11 @@
 package com.runtime.rebel.instahire.di
 
 import com.runtime.rebel.instahire.App
+import com.runtime.rebel.instahire.ui.AboutActivity
 import com.runtime.rebel.instahire.ui.HomeActivity
 import com.runtime.rebel.instahire.ui.LoginActivity
 import com.runtime.rebel.instahire.ui.boost.BoostProfileFragment
-import com.runtime.rebel.instahire.ui.home.DashboardFragment
+import com.runtime.rebel.instahire.ui.dashboard.DashboardFragment
 import com.runtime.rebel.instahire.ui.login.LoginFragment
 import com.runtime.rebel.instahire.ui.registration.RegistrationFragment
 import com.runtime.rebel.instahire.ui.reset.ForgotPasswordFragment
@@ -26,6 +27,7 @@ interface AppComponent {
     fun inject(application: App)
     fun inject(homeActivity: HomeActivity)
     fun inject(loginActivity: LoginActivity)
+    fun inject(aboutActivity: AboutActivity)
 
     // Add more components here as needed
     fun inject(loginFragment: LoginFragment)

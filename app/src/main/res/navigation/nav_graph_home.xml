@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.runtime.rebel.instahire.ui.home.DashboardFragment"
+        android:name="com.runtime.rebel.instahire.ui.dashboard.DashboardFragment"
         android:label="Dashboard" />
 
     <fragment

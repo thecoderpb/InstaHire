@@ -38,6 +38,10 @@ android {
     viewBinding {
         enable = true
     }
+
+    dataBinding {
+        enable = true
+    }
 }
 
 dependencies {
@@ -59,6 +63,8 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
     kapt(libs.dagger.compiler)
 
     // Retrofit

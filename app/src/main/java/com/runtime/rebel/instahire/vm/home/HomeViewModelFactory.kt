@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.runtime.rebel.instahire.repository.home.HomeRepository
 import javax.inject.Inject
 
+@Suppress("UNCHECKED_CAST")
 class HomeViewModelFactory @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModelProvider.Factory {

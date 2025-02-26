@@ -47,6 +47,10 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnLogin.setOnClickListener {
+            if(binding.etEmail.text.toString().isEmpty() || binding.etPassword.text.toString().isEmpty()) {
+                Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             viewModel.signInUser(
                 binding.etEmail.text.toString(),
                 binding.etPassword.text.toString(),
