@@ -18,4 +18,6 @@
     <string name="apply">Apply</string>
     <string name="boost">Boost</string>
     <string name="bullet">•</string>
+    <string name="tailor_cv_resume">Tailor CV/Resume</string>
+    <string name="source_placeholder">Source: Indeed</string>
 </resources>

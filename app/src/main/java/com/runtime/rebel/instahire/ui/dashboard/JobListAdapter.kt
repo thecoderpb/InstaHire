@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.runtime.rebel.instahire.databinding.ItemJobBinding
 import com.runtime.rebel.instahire.model.JobItem
 
-class JobListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class JobListAdapter(private val jobClickListener: (JobItem) -> Unit) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var jobList = mutableListOf<JobItem>()
 
@@ -34,9 +35,11 @@ class JobListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = jobList.size
 
-    inner class JobViewHolder(private val binding: ItemJobBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class JobViewHolder(private val binding: ItemJobBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(job: JobItem) {
             binding.job = job
+            binding.root.setOnClickListener { jobClickListener(job) }
             binding.executePendingBindings()
         }
     }

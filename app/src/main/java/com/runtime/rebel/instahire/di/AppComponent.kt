@@ -6,6 +6,7 @@ import com.runtime.rebel.instahire.ui.HomeActivity
 import com.runtime.rebel.instahire.ui.LoginActivity
 import com.runtime.rebel.instahire.ui.boost.BoostProfileFragment
 import com.runtime.rebel.instahire.ui.dashboard.DashboardFragment
+import com.runtime.rebel.instahire.ui.job.JobPostingFragment
 import com.runtime.rebel.instahire.ui.login.LoginFragment
 import com.runtime.rebel.instahire.ui.registration.RegistrationFragment
 import com.runtime.rebel.instahire.ui.reset.ForgotPasswordFragment
@@ -36,5 +37,6 @@ interface AppComponent {
     fun inject(registrationFragment: RegistrationFragment)
     fun inject(forgotPasswordFragment: ForgotPasswordFragment)
     fun inject(settingsFragment: SettingsFragment)
+    fun inject(jobPostingFragment: JobPostingFragment)
 
 }

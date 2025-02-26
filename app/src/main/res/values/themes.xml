@@ -7,8 +7,5 @@
 
     <style name="Theme.InstaHire" parent="Base.Theme.InstaHire" />
 
-    <style name="ShapeAppearanceOverlay.InstaHire.TextInputLayout.Rounded" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
+
 </resources>

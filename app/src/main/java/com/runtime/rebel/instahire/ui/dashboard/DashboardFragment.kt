@@ -1,15 +1,17 @@
 package com.runtime.rebel.instahire.ui.dashboard
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.runtime.rebel.instahire.App
 import com.runtime.rebel.instahire.databinding.FragmentDashboardBinding
+import com.runtime.rebel.instahire.model.JobItem
 import javax.inject.Inject
 
 class DashboardFragment : Fragment() {
@@ -39,7 +41,7 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        jobListAdapter = JobListAdapter()
+        jobListAdapter = JobListAdapter(::onJobClicked)
         binding.recyclerView.apply {
             adapter = jobListAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -58,6 +60,7 @@ class DashboardFragment : Fragment() {
         // Observe job listings and update UI
         viewModel.jobListings.observe(viewLifecycleOwner) { jobs ->
             binding.tvError.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
             jobListAdapter.setData(jobs)
         }
 
@@ -67,6 +70,7 @@ class DashboardFragment : Fragment() {
                 text = error
                 visibility = if (error.isNotEmpty()) View.VISIBLE else View.GONE
             }
+            binding.recyclerView.visibility = View.GONE
         }
 
         // Observe loading status to show a loading indicator
@@ -79,6 +83,15 @@ class DashboardFragment : Fragment() {
 
     }
 
+    private fun onJobClicked(jobItem: JobItem) {
+        val action = DashboardFragmentDirections.actionDashboardFragmentToJobPostingFragment(jobItem)
+        findNavController().navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.recyclerView.visibility = View.GONE
+    }
 
     // Method to load more jobs
     fun loadMoreJobs() {

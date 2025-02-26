@@ -3,6 +3,7 @@ package com.runtime.rebel.instahire.di
 import androidx.lifecycle.ViewModel
 import com.runtime.rebel.instahire.ui.boost.BoostViewModel
 import com.runtime.rebel.instahire.ui.dashboard.DashboardViewModel
+import com.runtime.rebel.instahire.ui.job.JobPostingViewModel
 import com.runtime.rebel.instahire.ui.login.LoginViewModel
 import com.runtime.rebel.instahire.ui.registration.RegistrationViewModel
 import com.runtime.rebel.instahire.ui.reset.ForgotPasswordViewModel
@@ -45,6 +46,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SettingsViewModel::class)
     abstract fun bindSettingsViewModel(viewModel: SettingsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobPostingViewModel::class)
+    abstract fun bindJobPostingViewModel(viewModel: JobPostingViewModel): ViewModel
 
 }
 
