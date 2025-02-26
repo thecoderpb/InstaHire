@@ -1,9 +1,15 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.google.gms.google.services)
 }
+
+val localProperties = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
+}
+val findWorkAPI = localProperties.getProperty("FINDWORK_API_KEY") ?: ""
 
 android {
     namespace = "com.runtime.rebel.instahire"
@@ -27,6 +33,13 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        debug {
+            buildConfigField("String", "FINDWORK_API_KEY", "\"$findWorkAPI\"")
+        }
+        release {
+            buildConfigField("String", "FINDWORK_API_KEY", "\"$findWorkAPI\"")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -41,6 +54,10 @@ android {
 
     dataBinding {
         enable = true
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 

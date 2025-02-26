@@ -10,6 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
+import com.runtime.rebel.instahire.BuildConfig
 
 @Module
 object NetworkModule {
@@ -56,7 +57,7 @@ object NetworkModule {
             .addInterceptor(loggingInterceptor) // Logs requests and responses
             .addInterceptor { chain ->          // Authorization header interceptor
                 val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Token 377dc707682417c6c7d2e4db41d712162133a37b") // Add your API key
+                    .addHeader("Authorization", "Token ${BuildConfig.FINDWORK_API_KEY}") // Add your API key
                     .build()
                 chain.proceed(request)
             }

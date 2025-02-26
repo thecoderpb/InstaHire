@@ -1,6 +1,7 @@
 package com.runtime.rebel.instahire.repository.home
 
 import com.google.firebase.auth.FirebaseAuth
+import com.runtime.rebel.instahire.BuildConfig
 import com.runtime.rebel.instahire.api.FindWorkAPI
 import com.runtime.rebel.instahire.model.JobResponse
 import timber.log.Timber
@@ -23,7 +24,7 @@ class HomeRepository @Inject constructor(
     suspend fun getJobListings(): JobResponse {
         return try {
             // Fetch the job listings for the current page
-            val jobResponse = jobApi.getJobListings(CREDENTIALS, currentPage)
+            val jobResponse = jobApi.getJobListings(BuildConfig.FINDWORK_API_KEY, currentPage)
             Timber.d(jobResponse.toString())
 
 //             If there is a next page, increment the page number
@@ -46,7 +47,4 @@ class HomeRepository @Inject constructor(
         currentPage = 1
     }
 
-    companion object {
-        private const val CREDENTIALS = "Token 377dc707682417c6c7d2e4db41d712162133a37b"
-    }
 }
