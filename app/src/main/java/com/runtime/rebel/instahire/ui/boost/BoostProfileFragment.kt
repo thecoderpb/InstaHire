@@ -1,14 +1,14 @@
 package com.runtime.rebel.instahire.ui.boost
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -22,7 +22,6 @@ import com.runtime.rebel.instahire.model.FileData
 import com.runtime.rebel.instahire.model.Result
 import com.runtime.rebel.instahire.ui.PdfViewerActivity
 import timber.log.Timber
-import java.net.URLEncoder
 import javax.inject.Inject
 
 class BoostProfileFragment : Fragment() {
@@ -68,7 +67,7 @@ class BoostProfileFragment : Fragment() {
         binding.cardUpload.setOnClickListener { filePickerLauncher.launch("application/pdf") }
         binding.btnBoostResume.setOnClickListener { boostResume() }
         binding.btnUpload.setOnClickListener {
-            viewModel.uploadFile(selectedPdfUri!!)
+            viewModel.uploadFile(selectedPdfUri!!, getFileNameFromUri(requireContext(), selectedPdfUri))
         }
 
     }
@@ -77,7 +76,8 @@ class BoostProfileFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 selectedPdfUri = uri
-                binding.tvUploadedFile.text = "Selected: ${uri.lastPathSegment}"
+                binding.tvUploadedFile.text = getFileNameFromUri(requireContext(),uri)
+
             }
             binding.tvUploadedFile.visibility = if (uri != null) View.VISIBLE else View.GONE
             binding.tvUploadText.visibility = if (uri != null) View.GONE else View.VISIBLE
@@ -187,6 +187,25 @@ class BoostProfileFragment : Fragment() {
         binding.tvUploadedFile.visibility = View.VISIBLE
         binding.tvUploadText.visibility = View.VISIBLE
         binding.tvUploadedFile.visibility = View.GONE
+    }
+
+    private fun getFileNameFromUri(context: Context, uri: Uri?): String? {
+        var fileName: String? = null
+
+        // Query the content provider for the file name
+        uri?.let {
+            val cursor = context.contentResolver.query(it, null, null, null, null)
+            cursor?.use {
+                val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (it.moveToFirst()) {
+                    fileName = it.getString(nameIndex)
+                }
+            }
+            return fileName
+        }
+
+        return fileName
+
     }
 
 }

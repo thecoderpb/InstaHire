@@ -63,8 +63,9 @@ class HomeRepository @Inject constructor(
     }
 
 
-    suspend fun uploadFile(uri: Uri): String? {
-        val storageRef = firebaseStorage.reference.child("users/${firebaseAuth.currentUser?.uid}/${UUID.randomUUID()}.pdf")
+    suspend fun uploadFile(uri: Uri, fileName: String?): String? {
+        val fname = fileName ?: (UUID.randomUUID().toString() + ".pdf")
+        val storageRef = firebaseStorage.reference.child("users/${firebaseAuth.currentUser?.uid}/${fname}")
         return try {
             val uploadTask = storageRef.putFile(uri).await()
             storageRef.downloadUrl.await().toString()
@@ -97,25 +98,4 @@ class HomeRepository @Inject constructor(
         firebaseStorage.getReferenceFromUrl(file.url).delete().await()
     }
 
-//    fun pushToFirbase(jobUrl: String, fileUri: Uri, context: Context): MutableLiveData<Result<String>> {
-//        val result = MutableLiveData<Result<String>>()
-//        val userId = firebaseAuth.currentUser?.uid ?: kotlin.run {
-//            result.value = Result.Error("User not logged in.")
-//            return result
-//        }
-//
-//        val database = firebaseDatabase
-//        val userFilesRef = database.getReference("users").child(userId).child("resume")
-//        userFilesRef.setValue(fileUri.toString())
-//            .addOnSuccessListener {
-//                result.value = Result.Success(fileUri.toString())
-//                Timber.d("File URL saved successfully.")
-//            }
-//            .addOnFailureListener {
-//                result.value = Result.Error("Failed to save file URL.")
-//                Timber.e("Failed to save file URL.")
-//            }
-//
-//        return result
-//    }
 }

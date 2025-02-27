@@ -2,7 +2,6 @@ package com.runtime.rebel.instahire.ui.boost
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.runtime.rebel.instahire.R
@@ -33,7 +32,7 @@ class UploadedFilesAdapter(
             binding.root.setOnClickListener { onItemClick(file) }
             binding.imgDelete.setOnClickListener { onDeleteClick(file) }
             binding.imgFileIcon.setImageResource(
-                if (file.isUpload)
+                if (file.isUserUploaded)
                     R.drawable.ic_outward
                 else
                     R.drawable.ic_inward

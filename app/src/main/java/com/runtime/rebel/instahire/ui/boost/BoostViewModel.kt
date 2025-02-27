@@ -35,11 +35,11 @@ class BoostViewModel @Inject constructor(
     }
 
 
-    fun boostProfile(pdfUri: Uri, jobUrl: String) {
+    fun boostProfile(pdfUri: Uri, pdfName: String, jobUrl: String) {
         viewModelScope.launch {
             _boostStatus.value = Result.Loading
             try {
-                homeRepository.uploadFile(pdfUri)?.let { downloadUrl ->
+                homeRepository.uploadFile(pdfUri,pdfName)?.let { downloadUrl ->
                     homeRepository.callOpenAI(downloadUrl, jobUrl)
                     _boostStatus.value = Result.Success
                 } ?: run {
@@ -58,11 +58,11 @@ class BoostViewModel @Inject constructor(
         }
     }
 
-    fun uploadFile(selectedPdfUri: Uri) {
+    fun uploadFile(selectedPdfUri: Uri, fileNameFromUri: String?) {
         viewModelScope.launch {
             _uploadingStatus.value = Result.Loading
             try {
-                homeRepository.uploadFile(selectedPdfUri)
+                homeRepository.uploadFile(selectedPdfUri,fileNameFromUri)
                 _uploadingStatus.value = Result.Success
             } catch (e: Exception) {
                 _uploadingStatus.value = Result.Error(e.message ?: "Unkown error")
