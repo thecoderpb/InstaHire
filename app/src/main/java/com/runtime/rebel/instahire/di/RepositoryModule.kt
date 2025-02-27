@@ -6,6 +6,7 @@ import com.runtime.rebel.instahire.repository.login.LoginRepository
 import com.runtime.rebel.instahire.vm.about.AboutViewModelFactory
 import com.runtime.rebel.instahire.vm.home.HomeViewModelFactory
 import com.runtime.rebel.instahire.vm.login.LoginViewModelFactory
+import com.runtime.rebel.instahire.vm.pdf.PdfViewerViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -29,5 +30,11 @@ object RepositoryModule {
     @Singleton
     fun provideAboutRepository(): AboutViewModelFactory {
         return AboutViewModelFactory()
+    }
+
+    @Provides
+    @Singleton
+    fun providePdfViewViewModelFactory(): PdfViewerViewModelFactory {
+        return  PdfViewerViewModelFactory()
     }
 }

@@ -1,11 +1,14 @@
 package com.runtime.rebel.instahire.ui.boost
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -15,12 +18,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.runtime.rebel.instahire.App
 import com.runtime.rebel.instahire.R
 import com.runtime.rebel.instahire.databinding.FragmentBoostBinding
+import com.runtime.rebel.instahire.model.FileData
 import com.runtime.rebel.instahire.model.Result
+import com.runtime.rebel.instahire.ui.PdfViewerActivity
 import timber.log.Timber
+import java.net.URLEncoder
 import javax.inject.Inject
 
 class BoostProfileFragment : Fragment() {
-
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -29,7 +34,6 @@ class BoostProfileFragment : Fragment() {
     private lateinit var binding: FragmentBoostBinding
     private var navJobUrl: String? = null
     private var selectedPdfUri: Uri? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +65,6 @@ class BoostProfileFragment : Fragment() {
         setupRecyclerView()
         observeViewModel()
 
-
         binding.cardUpload.setOnClickListener { filePickerLauncher.launch("application/pdf") }
         binding.btnBoostResume.setOnClickListener { boostResume() }
         binding.btnUpload.setOnClickListener {
@@ -89,7 +92,7 @@ class BoostProfileFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rvUploadedFiles.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = UploadedFilesAdapter { file -> viewModel.deleteFile(file) }
+        val adapter = UploadedFilesAdapter(::onCardClick) { file -> viewModel.deleteFile(file) }
         binding.rvUploadedFiles.adapter = adapter
 
         viewModel.uploadedFiles.observe(viewLifecycleOwner) { files ->
@@ -98,6 +101,13 @@ class BoostProfileFragment : Fragment() {
             binding.tvRecent.visibility = if (files.isEmpty()) View.GONE else View.VISIBLE
             binding.divider.visibility = if (files.isEmpty()) View.GONE else View.VISIBLE
         }
+    }
+
+    private fun onCardClick(fileData: FileData) {
+
+        val intent = Intent(requireContext(),PdfViewerActivity::class.java)
+        intent.putExtra("pdfUrl", fileData.url)
+        startActivity(intent)
     }
 
 
@@ -175,7 +185,8 @@ class BoostProfileFragment : Fragment() {
         binding.btnUpload.visibility = View.GONE
         binding.imgUpload.setImageDrawable(requireContext().getDrawable(R.drawable.ic_upload))
         binding.tvUploadedFile.visibility = View.VISIBLE
-        binding.tvUploadText.visibility = View.GONE
+        binding.tvUploadText.visibility = View.VISIBLE
+        binding.tvUploadedFile.visibility = View.GONE
     }
 
 }

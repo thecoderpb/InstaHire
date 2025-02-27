@@ -4,6 +4,7 @@ import com.runtime.rebel.instahire.App
 import com.runtime.rebel.instahire.ui.AboutActivity
 import com.runtime.rebel.instahire.ui.HomeActivity
 import com.runtime.rebel.instahire.ui.LoginActivity
+import com.runtime.rebel.instahire.ui.PdfViewerActivity
 import com.runtime.rebel.instahire.ui.boost.BoostProfileFragment
 import com.runtime.rebel.instahire.ui.dashboard.DashboardFragment
 import com.runtime.rebel.instahire.ui.job.JobPostingFragment
@@ -29,6 +30,7 @@ interface AppComponent {
     fun inject(homeActivity: HomeActivity)
     fun inject(loginActivity: LoginActivity)
     fun inject(aboutActivity: AboutActivity)
+    fun inject(pdfViewerActivity: PdfViewerActivity)
 
     // Add more components here as needed
     fun inject(loginFragment: LoginFragment)
