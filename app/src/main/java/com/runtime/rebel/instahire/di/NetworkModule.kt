@@ -20,7 +20,7 @@ object NetworkModule {
     @Named("jobApi")
     fun provideFindWorkRetrofit(): Retrofit = Retrofit.Builder()
         .baseUrl("https://findwork.dev/api/")
-        .client(provideOkHttpClient(this.provideLoggingInterceptor()))
+        .client(provideFindWorkHttpClient(this.provideLoggingInterceptor()))
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -52,10 +52,10 @@ object NetworkModule {
     // Provides OkHttpClient with Interceptors
     @Provides
     @Singleton
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideFindWorkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor) // Logs requests and responses
-            .addInterceptor { chain ->          // Authorization header interceptor
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", "Token ${BuildConfig.FINDWORK_API_KEY}") // Add your API key
                     .build()

@@ -1,6 +1,7 @@
 package com.runtime.rebel.instahire.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -35,7 +36,6 @@ class AboutActivity : AppCompatActivity() {
 
         // Get the ViewModel using the custom factory
         viewModel = ViewModelProvider(this, aboutViewModelFactory)[AboutActivityViewModel::class.java]
-
 
     }
 }

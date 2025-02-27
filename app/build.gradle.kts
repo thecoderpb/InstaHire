@@ -84,6 +84,9 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.database)
     kapt(libs.dagger.compiler)
 
     // Retrofit

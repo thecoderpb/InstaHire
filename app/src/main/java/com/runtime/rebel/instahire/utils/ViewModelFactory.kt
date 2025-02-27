@@ -1,4 +1,4 @@
-package com.runtime.rebel.instahire.vm
+package com.runtime.rebel.instahire.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

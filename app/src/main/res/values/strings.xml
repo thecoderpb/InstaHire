@@ -20,4 +20,18 @@
     <string name="bullet">•</string>
     <string name="tailor_cv_resume">Tailor CV/Resume</string>
     <string name="source_placeholder">Source: Indeed</string>
+    <string name="upload_resume">Please upload your resume to enhance your job applications.</string>
+    <string name="boost_your_profile_title">Boost Your Profile</string>
+    <string name="upload_resum">Select Resume (PDF)</string>
+    <string name="no_resume_selected">No resume selected</string>
+    <string name="upload_your_resume_pdf_only">Upload Your Resume (PDF Only)</string>
+    <string name="no_file_uploaded">No file uploaded</string>
+    <string name="file_icon">File Icon</string>
+    <string name="delete_file">Delete File</string>
+    <string name="uploaded_on_25_feb_2025">Uploaded on: 25 Feb 2025</string>
+    <string name="resume_pdf">resume.pdf</string>
+    <string name="tailor_my_profile">Tailor My Profile</string>
+    <string name="recent">Recent</string>
+    <string name="upload">Upload</string>
+    <string name="enter_job_url">Enter Job URL</string>
 </resources>
