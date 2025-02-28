@@ -2,6 +2,7 @@ package com.runtime.rebel.instahire.ui.boost
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,12 +35,25 @@ class UploadedFilesAdapter(
             binding.root.setOnClickListener { onItemClick(file) }
             binding.imgDelete.setOnClickListener { onDeleteClick(file) }
             binding.tvUploadDate.text = "Uploaded on: ${file.lastModified}"
-            binding.imgFileIcon.setImageResource(
-                if (file.isUserUploaded)
-                    R.drawable.ic_outward
-                else
-                    R.drawable.ic_inward
-            )
+
+            binding.imgDelete.visibility = if (file.isDeletable) View.VISIBLE else View.GONE
+            if(file.isDeletable){
+                binding.imgFileIcon.setImageResource(
+                    if (file.isUserUploaded)
+                        R.drawable.ic_cloud
+                    else
+                        R.drawable.ic_book
+                )
+            } else {
+                binding.imgFileIcon.setImageResource(
+                    if (file.isUserUploaded)
+                        R.drawable.ic_outward
+                    else
+                        R.drawable.ic_inward
+                )
+            }
+
+
 
 
         }

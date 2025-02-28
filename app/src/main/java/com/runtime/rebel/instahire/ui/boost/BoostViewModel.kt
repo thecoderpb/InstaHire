@@ -44,7 +44,8 @@ class BoostViewModel @Inject constructor(
 
     fun getUploadedFiles() {
         viewModelScope.launch {
-            _uploadedFiles.value = homeRepository.getUploadedFiles()
+            _uploadedFiles.value =
+                homeRepository.getUploadedFiles(isDeletable = false)
         }
     }
 
@@ -93,7 +94,8 @@ class BoostViewModel @Inject constructor(
     fun deleteFile(file: FileData) {
         viewModelScope.launch {
             homeRepository.deleteFile(file)
-            _uploadedFiles.value = homeRepository.getUploadedFiles()
+            _uploadedFiles.value =
+                homeRepository.getUploadedFiles(isDeletable = false)
         }
     }
 

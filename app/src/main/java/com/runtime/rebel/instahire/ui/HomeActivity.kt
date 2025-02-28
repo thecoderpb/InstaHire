@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -21,6 +22,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.runtime.rebel.instahire.App
 import com.runtime.rebel.instahire.R
 import com.runtime.rebel.instahire.databinding.ActivityHomeBinding
+import com.runtime.rebel.instahire.ui.boost.BoostProfileFragment
+import com.runtime.rebel.instahire.ui.dashboard.DashboardFragment
+import com.runtime.rebel.instahire.ui.files.FilesFragment
+import com.runtime.rebel.instahire.ui.settings.SettingsFragment
 import com.runtime.rebel.instahire.vm.home.HomeActivityViewModel
 import com.runtime.rebel.instahire.vm.home.HomeViewModelFactory
 import java.util.jar.Manifest
@@ -56,8 +61,18 @@ class HomeActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         // BottomNavigation setup
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigation.setupWithNavController(navController)
+        binding.bottomNavigation.labelVisibilityMode = BottomNavigationView.LABEL_VISIBILITY_LABELED
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            val currentDestination = navController.currentDestination?.id
+            when (item.itemId) {
+                R.id.dashboardFragment -> if (currentDestination != R.id.dashboardFragment) navController.navigate(R.id.dashboardFragment)
+                R.id.boostFragment -> if (currentDestination != R.id.boostFragment) navController.navigate(R.id.boostFragment)
+                R.id.filesFragment -> if (currentDestination != R.id.filesFragment) navController.navigate(R.id.filesFragment)
+                R.id.settingsFragment -> if (currentDestination != R.id.settingsFragment) navController.navigate(R.id.settingsFragment)
+            }
+            true
+        }
 
     }
 

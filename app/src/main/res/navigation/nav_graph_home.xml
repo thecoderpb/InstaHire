@@ -52,4 +52,9 @@
             app:destination="@id/boostFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/filesFragment"
+        android:name="com.runtime.rebel.instahire.ui.files.FilesFragment"
+        android:label="Files" />
+
 </navigation>

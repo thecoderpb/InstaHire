@@ -34,4 +34,9 @@
     <string name="recent">Recent</string>
     <string name="upload">Upload</string>
     <string name="enter_job_url">Enter Job URL</string>
+    <string name="files">Files</string>
+    <string name="bolt_icon">bolt icon</string>
+    <string name="get_started_by_boosting_your_profile">Get started by boosting your profile</string>
+    <string name="recent_user_files">Recent User Files</string>
+    <string name="recent_generted_files">Recent Generated Files</string>
 </resources>

@@ -53,13 +53,6 @@ class HomeRepository @Inject constructor(
     }
 
 
-
-    // Reset pagination to the first page
-    fun resetPagination() {
-        currentPage = 1
-    }
-
-
     suspend fun uploadFile(uri: Uri, fileName: String?): String? {
         val fname = fileName ?: (UUID.randomUUID().toString() + ".pdf")
         val storageRef = firebaseStorage.reference.child("users/${firebaseAuth.currentUser?.uid}/${fname}")
@@ -71,7 +64,7 @@ class HomeRepository @Inject constructor(
         }
     }
 
-    suspend fun getUploadedFiles(): List<FileData> {
+    suspend fun getUploadedFiles(isDeletable: Boolean): List<FileData> {
         val userId = firebaseAuth.currentUser?.uid ?: return emptyList()
         val userFilesRef = firebaseStorage.getReference("users").child(userId)
         val filesSnapshot = userFilesRef.listAll().await()
@@ -86,10 +79,12 @@ class HomeRepository @Inject constructor(
 
             // Creating FileData object with the name, url, and last modified date
             val fileData = FileData(
-                fileName,
-                url,
-                !fileName.contains("Enhanced"),
-                lastModified = lastModifiedDate)
+                name = fileName,
+                url = url,
+                isUserUploaded = !fileName.contains("Enhanced"),
+                lastModified = lastModifiedDate,
+                isDeletable = isDeletable,
+            )
             files.add(fileData)
         }
         return files
@@ -121,24 +116,5 @@ class HomeRepository @Inject constructor(
         }
 
     }
-
-//    fun generatePDF(firebasePdfUrl: String, context: Context): Any {
-//        // Step 1: Download PDF
-//        FirebaseHelper.downloadPDF(context, firebasePdfUrl) { pdfPath ->
-//            if (pdfPath != null) {
-//                // Step 2: Extract Text from PDF
-//                val extractedText = PdfUtils.extractTextFromPDF(pdfPath)
-//
-//                // Step 3: Enhance Text via OpenAI
-//                promptApi.enhancePDFText(extractedText) { enhancedText ->
-//                    if (enhancedText != null) {
-//                        // Step 4: Convert Enhanced Text Back to PDF
-//                        val outputPdfPath = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/enhanced_resume.pdf"
-//                        PDFGenerator.createPDF(outputPdfPath, enhancedText)
-//                    }
-//                }
-//            }
-//        }
-//    }
 
 }

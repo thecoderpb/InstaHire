@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.runtime.rebel.instahire.App
@@ -143,7 +144,7 @@ class BoostProfileFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     private fun observeViewModel() {
 
-        viewModel.boostStatus.observe(viewLifecycleOwner) { status ->
+        viewModel.boostStatus.distinctUntilChanged().observe(viewLifecycleOwner) { status ->
             when (status) {
                 Result.Success -> {
                     showUploadUI()
@@ -175,7 +176,7 @@ class BoostProfileFragment : Fragment() {
             }
         }
 
-        viewModel.uploadingStatus.observe(viewLifecycleOwner) { status ->
+        viewModel.uploadingStatus.distinctUntilChanged().observe(viewLifecycleOwner) { status ->
             when (status) {
                 Result.Success -> {
                     viewModel.getUploadedFiles()
@@ -202,7 +203,7 @@ class BoostProfileFragment : Fragment() {
 
         }
 
-        viewModel.uploadedFileUrl.observe(viewLifecycleOwner) { url ->
+        viewModel.uploadedFileUrl.distinctUntilChanged().observe(viewLifecycleOwner) { url ->
             if (url != null && navJobUrl != null && navJobDescription != null && isBoostClicked) {
                 showLoadingUI("Generating Resume ...")
                 isBoostClicked = false
@@ -213,9 +214,20 @@ class BoostProfileFragment : Fragment() {
                     navJobDescription!!,
                 )
             }
+
+            if (url !=null && isBoostClicked && binding.etJobUrl.text.toString().trim().isNotEmpty()) {
+                showLoadingUI("Generating Resume ...")
+                isBoostClicked = false
+                viewModel.processResumeEnhancement(
+                    requireContext(),
+                    url,
+                    binding.etJobUrl.text.toString().trim(),
+                    "Job description not provided",
+                )
+            }
         }
 
-        viewModel.generatedText.observe(viewLifecycleOwner) { text ->
+        viewModel.generatedText.distinctUntilChanged().observe(viewLifecycleOwner) { text ->
             showLoadingUI("Generating Resume ...")
             val pdfDirectory = File(
                 requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
@@ -234,7 +246,7 @@ class BoostProfileFragment : Fragment() {
 
         }
 
-        viewModel.uploadingGeneratedFileStatus.observe(viewLifecycleOwner) {
+        viewModel.uploadingGeneratedFileStatus.distinctUntilChanged().observe(viewLifecycleOwner) {
             when (it) {
                 Result.Success -> {
                     viewModel.getUploadedFiles()
