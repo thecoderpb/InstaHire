@@ -12,6 +12,7 @@ val localProperties = Properties().apply {
     load(rootProject.file("local.properties").inputStream())
 }
 val findWorkAPI = localProperties.getProperty("FINDWORK_API_KEY") ?: ""
+val openAiAPI = localProperties.getProperty("OPENAI_API_KEY") ?: ""
 
 android {
     namespace = "com.runtime.rebel.instahire"
@@ -38,6 +39,7 @@ android {
 
         debug {
             buildConfigField("String", "FINDWORK_API_KEY", "\"$findWorkAPI\"")
+            buildConfigField("String", "OPENAI_API_KEY", "\"$openAiAPI\"")
         }
         release {
             buildConfigField("String", "FINDWORK_API_KEY", "\"$findWorkAPI\"")
@@ -87,6 +89,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.database)
+    implementation(libs.itext7.core)
     kapt(libs.dagger.compiler)
 
     // Retrofit
@@ -94,6 +97,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     // Add timber
     implementation(libs.timber)
+
 
 
     testImplementation(libs.junit)

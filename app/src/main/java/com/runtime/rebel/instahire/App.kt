@@ -4,6 +4,7 @@ import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.runtime.rebel.instahire.di.AppComponent
 import com.runtime.rebel.instahire.di.DaggerAppComponent
+import timber.log.Timber
 
 /**
  * Main App component to enable DI throughout the app.
@@ -21,6 +22,10 @@ class App : Application() {
             .build()
         appComponent
             .inject(this)
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
 
     }
 }

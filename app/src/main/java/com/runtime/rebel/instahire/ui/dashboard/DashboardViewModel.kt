@@ -30,7 +30,6 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val jobResponse = homeRepository.getJobListings()
-                Timber.tag("TEST").i(jobResponse.toString())
                 _jobListings.value = jobResponse.results
                 _loading.value = false
             } catch (e: Exception) {

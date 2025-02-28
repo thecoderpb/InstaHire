@@ -2,12 +2,15 @@ package com.runtime.rebel.instahire.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +23,7 @@ import com.runtime.rebel.instahire.R
 import com.runtime.rebel.instahire.databinding.ActivityHomeBinding
 import com.runtime.rebel.instahire.vm.home.HomeActivityViewModel
 import com.runtime.rebel.instahire.vm.home.HomeViewModelFactory
+import java.util.jar.Manifest
 import javax.inject.Inject
 
 /**

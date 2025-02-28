@@ -107,6 +107,18 @@
                     app:strokeColor="?attr/colorPrimary" />
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginBottom="18dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/purple"
+                android:indeterminateTintMode="multiply"
+                tools:visibility="visible"/>
+
         </com.google.android.material.card.MaterialCardView>
 
 

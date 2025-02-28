@@ -25,6 +25,11 @@
             android:name="jobUrl"
             app:argType="java.lang.String"
             app:nullable="true" />
+
+        <argument
+            android:name="jobDescription"
+            app:argType="java.lang.String"
+            app:nullable="true" />
     </fragment>
 
     <fragment

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,9 @@ import com.runtime.rebel.instahire.databinding.FragmentBoostBinding
 import com.runtime.rebel.instahire.model.FileData
 import com.runtime.rebel.instahire.model.Result
 import com.runtime.rebel.instahire.ui.PdfViewerActivity
+import com.runtime.rebel.instahire.utils.PDFGenerator
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 class BoostProfileFragment : Fragment() {
@@ -32,7 +35,9 @@ class BoostProfileFragment : Fragment() {
     private lateinit var viewModel: BoostViewModel
     private lateinit var binding: FragmentBoostBinding
     private var navJobUrl: String? = null
+    private var navJobDescription: String? = null
     private var selectedPdfUri: Uri? = null
+    private var isBoostClicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +58,7 @@ class BoostProfileFragment : Fragment() {
 
         arguments?.let {
             navJobUrl = it.getString("jobUrl")
+            navJobDescription = it.getString("jobDescription")
         }
 
         navJobUrl?.let {
@@ -67,7 +73,10 @@ class BoostProfileFragment : Fragment() {
         binding.cardUpload.setOnClickListener { filePickerLauncher.launch("application/pdf") }
         binding.btnBoostResume.setOnClickListener { boostResume() }
         binding.btnUpload.setOnClickListener {
-            viewModel.uploadFile(selectedPdfUri!!, getFileNameFromUri(requireContext(), selectedPdfUri))
+            viewModel.uploadUserFile(
+                selectedPdfUri!!,
+                getFileNameFromUri(requireContext(), selectedPdfUri)
+            )
         }
 
     }
@@ -76,7 +85,7 @@ class BoostProfileFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 selectedPdfUri = uri
-                binding.tvUploadedFile.text = getFileNameFromUri(requireContext(),uri)
+                binding.tvUploadedFile.text = getFileNameFromUri(requireContext(), uri)
 
             }
             binding.tvUploadedFile.visibility = if (uri != null) View.VISIBLE else View.GONE
@@ -105,7 +114,7 @@ class BoostProfileFragment : Fragment() {
 
     private fun onCardClick(fileData: FileData) {
 
-        val intent = Intent(requireContext(),PdfViewerActivity::class.java)
+        val intent = Intent(requireContext(), PdfViewerActivity::class.java)
         intent.putExtra("pdfUrl", fileData.url)
         startActivity(intent)
     }
@@ -122,35 +131,47 @@ class BoostProfileFragment : Fragment() {
             ).show()
             return
         }
-        // Call prompt API from viewmodel
+
+        viewModel.uploadUserFile(
+            selectedPdfUri!!,
+            getFileNameFromUri(requireContext(), selectedPdfUri)
+        )
+        isBoostClicked = true
+
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     private fun observeViewModel() {
 
         viewModel.boostStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 Result.Success -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Resume boosted!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showUploadUI()
                     viewModel.getUploadedFiles()
+                    Snackbar.make(
+                        requireView(),
+                        "AI overlord cooked your resume!!!",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+
+                Result.Loading -> {
+
+                    showLoadingUI("Boosting Resume ...")
+                    Snackbar.make(
+                        requireView(),
+                        "Let the AI overlord cook...",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
 
                 }
 
-                Result.Loading -> Toast.makeText(
-                    requireContext(),
-                    "Boosting resume...",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                is Result.Error -> Toast.makeText(
-                    requireContext(),
-                    "Error: ${status.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                is Result.Error -> {
+                    Timber.d(status.message)
+                    binding.tvUploadText.visibility = View.VISIBLE
+                    binding.tvUploadText.text = "Oops, something went wrong. Please try again"
+                    binding.progressCircular.visibility = View.GONE
+                }
             }
         }
 
@@ -158,35 +179,105 @@ class BoostProfileFragment : Fragment() {
             when (status) {
                 Result.Success -> {
                     viewModel.getUploadedFiles()
-                    resetUploadUI()
+                    if(viewModel.boostStatus.value !is Result.Loading)
+                    showUploadUI()
                 }
 
                 Result.Loading -> {
-                    Snackbar.make(
-                        requireView(),
-                        "Uploading Beep Boop ...",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    showLoadingUI("Uploading Beep Boop ...")
                 }
+
                 is Result.Error -> {
+                    Timber.d(status.message)
+                    binding.tvUploadText.visibility = View.VISIBLE
+                    binding.tvUploadText.text = "Oops, something went wrong. Please try again"
+                    binding.progressCircular.visibility = View.GONE
                     Snackbar.make(
                         requireView(),
                         "Oops, something went wrong. Please try again",
                         Snackbar.LENGTH_SHORT
                     ).show()
-                    resetUploadUI()
                 }
             }
 
         }
+
+        viewModel.uploadedFileUrl.observe(viewLifecycleOwner) { url ->
+            if (url != null && navJobUrl != null && navJobDescription != null && isBoostClicked) {
+                showLoadingUI("Generating Resume ...")
+                isBoostClicked = false
+                viewModel.processResumeEnhancement(
+                    requireContext(),
+                    url,
+                    navJobUrl!!,
+                    navJobDescription!!,
+                )
+            }
+        }
+
+        viewModel.generatedText.observe(viewLifecycleOwner) { text ->
+            showLoadingUI("Generating Resume ...")
+            val pdfDirectory = File(
+                requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
+                "InstaHire"
+            )
+            if (!pdfDirectory.exists()) {
+                pdfDirectory.mkdirs()  // Create directory if it doesn't exist
+            }
+            val pdfFile = File(
+                pdfDirectory,
+                getFileNameFromUri(requireContext(), selectedPdfUri) ?: "InstaHire.pdf"
+            )
+            PDFGenerator.createPDF(pdfFile, text)
+
+            viewModel.uploadGeneratedFile(pdfFile.absolutePath, "Enhanced - ${pdfFile.name}")
+
+        }
+
+        viewModel.uploadingGeneratedFileStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                Result.Success -> {
+                    viewModel.getUploadedFiles()
+
+                    showUploadUI()
+                }
+
+                is Result.Error -> {
+
+                    binding.tvUploadText.text = "Error: ${it.message}"
+                    binding.progressCircular.visibility = View.GONE
+
+                }
+
+                Result.Loading -> {
+                    showLoadingUI("Uploading your enhanced resume...")
+                }
+            }
+        }
+
     }
 
-    private fun resetUploadUI() {
+    private fun showUploadUI() {
         binding.btnUpload.visibility = View.GONE
-        binding.imgUpload.setImageDrawable(requireContext().getDrawable(R.drawable.ic_upload))
+        binding.imgUpload.visibility = View.VISIBLE
         binding.tvUploadedFile.visibility = View.VISIBLE
         binding.tvUploadText.visibility = View.VISIBLE
         binding.tvUploadedFile.visibility = View.GONE
+        binding.progressCircular.visibility = View.GONE
+
+        binding.imgUpload.setImageDrawable(requireContext().getDrawable(R.drawable.ic_upload))
+        binding.tvUploadText.text = getString(R.string.upload_your_resume_pdf_only)
+    }
+
+    private fun showLoadingUI(spinnerText: String) {
+        binding.btnUpload.visibility = View.GONE
+        binding.imgUpload.visibility = View.INVISIBLE
+        binding.tvUploadedFile.visibility = View.GONE
+        binding.tvUploadText.visibility = View.VISIBLE
+        binding.progressCircular.visibility = View.VISIBLE
+        binding.tvUploadedFile.visibility = View.GONE
+
+        binding.tvUploadText.text = spinnerText
     }
 
     private fun getFileNameFromUri(context: Context, uri: Uri?): String? {
@@ -195,13 +286,12 @@ class BoostProfileFragment : Fragment() {
         // Query the content provider for the file name
         uri?.let {
             val cursor = context.contentResolver.query(it, null, null, null, null)
-            cursor?.use {
-                val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (it.moveToFirst()) {
-                    fileName = it.getString(nameIndex)
+            cursor?.use { safeCursor ->
+                val nameIndex = safeCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (safeCursor.moveToFirst()) {
+                    fileName = safeCursor.getString(nameIndex)
                 }
             }
-            return fileName
         }
 
         return fileName

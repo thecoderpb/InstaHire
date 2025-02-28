@@ -1,9 +1,6 @@
 package com.runtime.rebel.instahire.repository.home
 
-import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -11,9 +8,10 @@ import com.runtime.rebel.instahire.BuildConfig
 import com.runtime.rebel.instahire.api.FindWorkAPI
 import com.runtime.rebel.instahire.api.OpenAiAPI
 import com.runtime.rebel.instahire.model.FileData
+import com.runtime.rebel.instahire.model.GptPdfRequest
 import com.runtime.rebel.instahire.model.JobResponse
-import com.runtime.rebel.instahire.model.Resume
-import com.runtime.rebel.instahire.utils.Result
+import com.runtime.rebel.instahire.model.Message
+import com.runtime.rebel.instahire.utils.DateUtils
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import java.util.UUID
@@ -54,7 +52,6 @@ class HomeRepository @Inject constructor(
         }
     }
 
-//    suspend fun getJobListings(): JobResponse = jobApi.getJobListings(CREDENTIALS, currentPage)
 
 
     // Reset pagination to the first page
@@ -67,20 +64,14 @@ class HomeRepository @Inject constructor(
         val fname = fileName ?: (UUID.randomUUID().toString() + ".pdf")
         val storageRef = firebaseStorage.reference.child("users/${firebaseAuth.currentUser?.uid}/${fname}")
         return try {
-            val uploadTask = storageRef.putFile(uri).await()
+            storageRef.putFile(uri).await()
             storageRef.downloadUrl.await().toString()
         } catch (e: Exception) {
             null
         }
     }
 
-    suspend fun callOpenAI(resumeUrl: String, jobUrl: String) {
-        val requestBody = mapOf("resumeUrl" to resumeUrl, "jobUrl" to jobUrl)
-//        promptApi.boostResume(requestBody)
-    }
-
     suspend fun getUploadedFiles(): List<FileData> {
-        // Fetch uploaded files from Firestore or Realtime DB
         val userId = firebaseAuth.currentUser?.uid ?: return emptyList()
         val userFilesRef = firebaseStorage.getReference("users").child(userId)
         val filesSnapshot = userFilesRef.listAll().await()
@@ -88,7 +79,17 @@ class HomeRepository @Inject constructor(
         for (file in filesSnapshot.items) {
             val url = file.downloadUrl.await().toString()
             val fileName = file.name
-            val fileData = FileData(fileName, url)
+            // Get the file metadata to fetch the last modified date
+            val metadata = file.metadata.await()
+            val lastModifiedDate = DateUtils.convertMillisToDate(metadata.updatedTimeMillis ) // This will give you the last modified date
+
+
+            // Creating FileData object with the name, url, and last modified date
+            val fileData = FileData(
+                fileName,
+                url,
+                !fileName.contains("Enhanced"),
+                lastModified = lastModifiedDate)
             files.add(fileData)
         }
         return files
@@ -97,5 +98,47 @@ class HomeRepository @Inject constructor(
     suspend fun deleteFile(file: FileData) {
         firebaseStorage.getReferenceFromUrl(file.url).delete().await()
     }
+
+    suspend fun processPdf(pdfData: String, pdfUrl: String,  jobUrl: String?, jobDescription: String ): String? {
+        val request = GptPdfRequest(
+            messages = listOf(
+                Message(role = "system", content = "Read the job description and the resume and enhance the resume based on the job description preserving formatting."),
+                Message(role = "user", content = "Here's the file content: $pdfData", fileUrl = pdfData),
+                Message(role = "user", content = "Here's the job content: $jobDescription", fileUrl = jobDescription),
+                Message(role = "user", content = "Here's the job url: $jobUrl", fileUrl = jobUrl),
+                Message(role = "user", content = "Here's the pdf url: $pdfUrl", fileUrl = jobUrl),
+                Message(role = "system", content = "If no data is found, then rephrase the entire resume and send the data preserving formatting", fileUrl = jobUrl),
+
+            )
+        )
+
+        return try {
+            val response = promptApi.processPdf(request)
+            response.choices.firstOrNull()?.message?.content
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+
+    }
+
+//    fun generatePDF(firebasePdfUrl: String, context: Context): Any {
+//        // Step 1: Download PDF
+//        FirebaseHelper.downloadPDF(context, firebasePdfUrl) { pdfPath ->
+//            if (pdfPath != null) {
+//                // Step 2: Extract Text from PDF
+//                val extractedText = PdfUtils.extractTextFromPDF(pdfPath)
+//
+//                // Step 3: Enhance Text via OpenAI
+//                promptApi.enhancePDFText(extractedText) { enhancedText ->
+//                    if (enhancedText != null) {
+//                        // Step 4: Convert Enhanced Text Back to PDF
+//                        val outputPdfPath = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/enhanced_resume.pdf"
+//                        PDFGenerator.createPDF(outputPdfPath, enhancedText)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }

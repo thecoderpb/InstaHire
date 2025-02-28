@@ -27,6 +27,7 @@ loggingInterceptor = "5.0.0-alpha.14"
 firebaseFirestoreKtx = "25.1.2"
 firebaseStorageKtx = "21.0.1"
 firebaseDatabase = "21.0.0"
+itext7Core = "9.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,6 +58,7 @@ logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercep
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+itext7-core = { group = "com.itextpdf", name = "itext7-core", version.ref = "itext7Core" }
 [bundles]
 
 

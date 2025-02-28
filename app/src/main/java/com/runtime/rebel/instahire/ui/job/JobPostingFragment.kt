@@ -57,7 +57,7 @@ class JobPostingFragment : Fragment() {
             binding.btnTailor.setOnClickListener { _ ->
 
                 jobInfo.url?.let { safeUrl ->
-                    findNavController().navigate(JobPostingFragmentDirections.actionJobPostingFragmentToBoostFragment(safeUrl))
+                    findNavController().navigate(JobPostingFragmentDirections.actionJobPostingFragmentToBoostFragment(safeUrl, jobInfo.text))
                 }
 
             }

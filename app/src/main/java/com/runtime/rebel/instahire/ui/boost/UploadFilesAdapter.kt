@@ -1,5 +1,6 @@
 package com.runtime.rebel.instahire.ui.boost
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -27,10 +28,12 @@ class UploadedFilesAdapter(
 
     inner class FileViewHolder(private val binding: ItemUploadedFileBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(file: FileData) {
             binding.tvFileName.text = file.name
             binding.root.setOnClickListener { onItemClick(file) }
             binding.imgDelete.setOnClickListener { onDeleteClick(file) }
+            binding.tvUploadDate.text = "Uploaded on: ${file.lastModified}"
             binding.imgFileIcon.setImageResource(
                 if (file.isUserUploaded)
                     R.drawable.ic_outward
