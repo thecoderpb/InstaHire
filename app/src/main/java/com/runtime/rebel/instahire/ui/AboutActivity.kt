@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.runtime.rebel.instahire.App
 import com.runtime.rebel.instahire.R
+import com.runtime.rebel.instahire.databinding.ActivityAboutBinding
 import com.runtime.rebel.instahire.vm.about.AboutActivityViewModel
 import com.runtime.rebel.instahire.vm.about.AboutViewModelFactory
 import com.runtime.rebel.instahire.vm.login.LoginActivityViewModel
@@ -19,12 +20,14 @@ class AboutActivity : AppCompatActivity() {
     @Inject
     lateinit var aboutViewModelFactory: AboutViewModelFactory
     private lateinit var viewModel: AboutActivityViewModel
+    private lateinit var binding: ActivityAboutBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_about)
+        binding = ActivityAboutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

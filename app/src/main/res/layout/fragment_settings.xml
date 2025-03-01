@@ -17,7 +17,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="Settings"
+                android:text="@string/settings"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                 android:paddingVertical="8dp">
 
                 <TextView
-                    android:text="Dark Mode"
+                    android:text="@string/dark_mode"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content" />
@@ -58,7 +58,7 @@
                 android:paddingVertical="8dp">
 
                 <TextView
-                    android:text="Enable Notifications"
+                    android:text="@string/enable_notifications"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content" />
@@ -72,10 +72,11 @@
             <!-- About Us -->
             <TextView
                 android:id="@+id/tv_about_us"
-                android:text="About Us"
+                android:text="@string/about_us"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="16sp"
                 android:paddingVertical="12dp"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -92,7 +93,7 @@
 
         <Button
             android:id="@+id/btn_logout"
-            android:text="Logout"
+            android:text="@string/logout"
             android:backgroundTint="@android:color/holo_red_light"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"

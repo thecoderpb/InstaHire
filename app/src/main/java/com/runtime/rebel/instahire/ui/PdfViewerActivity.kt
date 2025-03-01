@@ -1,6 +1,9 @@
 package com.runtime.rebel.instahire.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -37,6 +40,16 @@ class PdfViewerActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this, pdfViewerViewModelFactory)[PdfViewerViewModel::class.java]
+        intent.getStringExtra("recent_boost")?.let {
+            binding.btnUse.visibility = View.VISIBLE
+        }
+
+        binding.btnUse.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("useClicked", intent.getStringExtra("recent_boost"))
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
 
 
         // Enable JavaScript for PDF.js

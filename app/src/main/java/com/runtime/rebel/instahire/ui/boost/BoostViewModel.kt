@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
-import kotlin.random.Random
 
 class BoostViewModel @Inject constructor(
     private val homeRepository: HomeRepository
@@ -78,10 +77,9 @@ class BoostViewModel @Inject constructor(
                             return@launch
 
                         }
-                        Timber.d("Enhanced text: $enhancedText")
 
                         _boostStatus.value =
-                            Result.Error("Failed creating PDF. Enhanced text $enhancedText")
+                            Result.Error("Failed creating PDF.")
                     }
                 } else {
                     _boostStatus.value = Result.Error("PDF download failed")

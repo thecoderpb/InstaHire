@@ -45,4 +45,27 @@
     <string name="san_francisco_ca_posted_12th_feb_2025">San Francisco, CA | Posted: 12th Feb 2025</string>
     <string name="this_is_a_great_opportunity_for_a_skilled_android_developer">This is a great opportunity for a skilled Android developer...</string>
     <string name="about_us">About Us</string>
+    <string name="enable_notifications">Enable Notifications</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="logout">Logout</string>
+    <string name="meet_our_team">Meet Our Team</string>
+    <string name="about_us_description">Tired of getting rejected by companies? \nNeed to enhance your profile?\nLook no further!\nInstaHire helps you stand out from the crowd by analysing your resume and job description and tailoring your resume to the dream job you are looking for.</string>
+    <string name="member_1">member_1</string>
+    <string name="pratik_byathnal">Pratik Byathnal</string>
+    <string name="day_dreamer">Leading the High Life</string>
+    <string name="rashmi_vidushani">Rashmi Vidushani</string>
+    <string name="member_2">member_2</string>
+    <string name="portable_tension">Portable Tension</string>
+    <string name="lalana_chamika">Lalana Chamika</string>
+    <string name="loves_french_vanilla">Loves French Vanilla</string>
+    <string name="member_4">member_4</string>
+    <string name="nasif_nuha">Nasif Nuha</string>
+    <string name="member_3">member_3</string>
+    <string name="lost_phone_recently">Lost Phone Recently</string>
+    <string name="_1247949">1247949</string>
+    <string name="_1180266">1180266</string>
+    <string name="_1227349">1227349</string>
+    <string name="_1189191">1189191</string>
+    <string name="use_file">Use File</string>
+    <string name="our_features">Features\n\n- Browse for more than 10,000+ job posting from our dashboard (Courtesy Findwork API) \n\n- Store resume securely online (Firebase Storage) \n\n- Generate as many \"enhanced\" resume using OpenAI API (Courtesy OpenAI) \n\n- Store generated resume securely online \n\n- View your files directly from our app for seamless experience (Courtesy Web Google Document Viewer) \n\n-Get reminder notifications to regularly boost your profile and apply for jobs \n\n</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.runtime.rebel.instahire.ui.boost
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +11,7 @@ import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,6 +40,9 @@ class BoostProfileFragment : Fragment() {
     private var navJobDescription: String? = null
     private var selectedPdfUri: Uri? = null
     private var isBoostClicked = false
+    private var recentPdfUrl: String? = null
+
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +84,16 @@ class BoostProfileFragment : Fragment() {
             )
         }
 
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val fName = result.data?.getStringExtra("useClicked")
+                    fName?.let {
+                        binding.tvUploadText.text = it
+                    }
+                }
+            }
+
     }
 
     private val filePickerLauncher =
@@ -118,12 +132,29 @@ class BoostProfileFragment : Fragment() {
 
         val intent = Intent(requireContext(), PdfViewerActivity::class.java)
         intent.putExtra("pdfUrl", fileData.url)
-        startActivity(intent)
+        intent.putExtra("recent_boost", fileData.name)
+        resultLauncher.launch(intent)
+        recentPdfUrl = fileData.url
     }
 
 
     private fun boostResume() {
+
         val jobUrl = binding.etJobUrl.text.toString().trim()
+
+        if (jobUrl.isNotEmpty() && recentPdfUrl != null && binding.etJobUrl.text.toString().trim()
+                .isNotEmpty()
+        ) {
+            viewModel.processResumeEnhancement(
+                requireContext(),
+                recentPdfUrl.toString(),
+                binding.etJobUrl.text.toString().trim(),
+                "Job description not provided",
+            )
+            isBoostClicked = false
+            return
+        }
+
         if (jobUrl.isEmpty() || selectedPdfUri == null) {
             Snackbar.make(
                 requireContext(),
@@ -181,8 +212,8 @@ class BoostProfileFragment : Fragment() {
             when (status) {
                 Result.Success -> {
                     viewModel.getUploadedFiles()
-                    if(viewModel.boostStatus.value !is Result.Loading)
-                    showUploadUI()
+                    if (viewModel.boostStatus.value !is Result.Loading)
+                        showUploadUI()
                 }
 
                 Result.Loading -> {
@@ -216,7 +247,9 @@ class BoostProfileFragment : Fragment() {
                 )
             }
 
-            if (url !=null && isBoostClicked && binding.etJobUrl.text.toString().trim().isNotEmpty()) {
+            if (url != null && isBoostClicked && binding.etJobUrl.text.toString().trim()
+                    .isNotEmpty()
+            ) {
                 showLoadingUI("Generating Resume ...")
                 isBoostClicked = false
                 viewModel.processResumeEnhancement(
@@ -239,7 +272,7 @@ class BoostProfileFragment : Fragment() {
             }
             val pdfFile = File(
                 pdfDirectory,
-                getFileNameFromUri(requireContext(), selectedPdfUri) ?: "InstaHire.pdf"
+                getFileNameFromUri(requireContext(), selectedPdfUri) ?: (recentPdfUrl ?: "InstaHIre.pdf")
             )
             PDFGenerator.createPDF(pdfFile, text)
 
