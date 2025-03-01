@@ -1,5 +1,8 @@
 package com.runtime.rebel.instahire.ui.job
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +39,7 @@ class JobPostingFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,22 +48,49 @@ class JobPostingFragment : Fragment() {
         jobItem?.let { jobInfo ->
             binding.tvJobTitle.text = jobInfo.role
             binding.tvCompanyName.text = jobInfo.companyName
-            binding.tvLocationDate.text = "${jobInfo.location} | Posted: ${jobInfo.datePosted}"
+            binding.tvLocationDate.text =
+                "${jobInfo.location ?: "Remote"} | Posted: ${jobInfo.datePosted}"
             binding.tvJobDescription.text = jobInfo.text ?: "No description available"
-            binding.tvSource.text = "Source: ${jobInfo.source}"
+            binding.tvSource.text = "Source: ${jobInfo.source ?: ""}"
 
             // Set Keywords
 
-            binding.rvKeywords.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            binding.rvKeywords.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             binding.rvKeywords.adapter = KeywordAdapter(jobInfo.keywords)
 
             // Tailor Button
             binding.btnTailor.setOnClickListener { _ ->
 
                 jobInfo.url?.let { safeUrl ->
-                    findNavController().navigate(JobPostingFragmentDirections.actionJobPostingFragmentToBoostFragment(safeUrl, jobInfo.text))
+                    findNavController().navigate(
+                        JobPostingFragmentDirections.actionJobPostingFragmentToBoostFragment(
+                            safeUrl,
+                            jobInfo.text
+                        )
+                    )
                 }
 
+            }
+
+            binding.fabApplyJob.setOnClickListener {
+                jobInfo.url?.let { safeUrl ->
+                    // Open Url in browser with intent
+
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(safeUrl))
+                    startActivity(browserIntent)
+
+                }
+            }
+
+            binding.tvSource.setOnClickListener {
+                jobInfo.source?.let { safeSource ->
+                    // Open Url in browser with intent
+
+                    val url = "https://www.google.com/search?q=" + Uri.encode(safeSource)
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(browserIntent)
+                }
             }
         }
 

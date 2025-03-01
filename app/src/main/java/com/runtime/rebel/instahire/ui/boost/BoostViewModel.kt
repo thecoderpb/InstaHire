@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
+import kotlin.random.Random
 
 class BoostViewModel @Inject constructor(
     private val homeRepository: HomeRepository
@@ -103,6 +104,7 @@ class BoostViewModel @Inject constructor(
         viewModelScope.launch {
             _uploadingUserFileStatus.value = Result.Loading
             try {
+
                 val fileUrl = homeRepository.uploadFile(selectedPdfUri, fileNameFromUri)
                 _uploadedUserFileUrl.value = fileUrl
                 _uploadingUserFileStatus.value = Result.Success

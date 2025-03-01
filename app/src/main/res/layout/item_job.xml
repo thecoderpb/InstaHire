@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:backgroundTint="?attr/colorSurface"
+        android:backgroundTint="?attr/colorSurfaceDim"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:strokeColor="?attr/colorOutline"
@@ -56,6 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bullet"
+                    android:visibility="invisible"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <TextView

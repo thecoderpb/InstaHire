@@ -10,6 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/iv_error"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:contentDescription="@string/error_icon"
+            android:src="@drawable/ic_warning"
+            android:backgroundTint="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            app:layout_constraintVertical_bias="0.40" />
+
         <TextView
             android:id="@+id/tv_error"
             android:layout_width="match_parent"
@@ -17,16 +31,19 @@
             android:text="@string/about"
             android:textAlignment="center"
             android:visibility="gone"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_uploaded_file"/>
 
         <ProgressBar
             android:id="@+id/progressBar"

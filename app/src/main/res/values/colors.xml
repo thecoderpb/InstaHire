@@ -6,4 +6,7 @@
     <color name="green">#4CAF50</color>
     <color name="blue">#2196F3</color>
     <color name="purple">#673AB7</color>
+    <!-- Light Mode Colors -->
+    <color name="box_stroke_color">#FF6200EE</color> <!-- Primary color -->
+    <color name="colorError">#B00020</color> <!-- Error color -->
 </resources>

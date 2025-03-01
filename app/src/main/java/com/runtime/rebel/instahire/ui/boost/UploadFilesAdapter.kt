@@ -44,7 +44,9 @@ class UploadedFilesAdapter(
                     else
                         R.drawable.ic_book
                 )
+                binding.tvFileName.maxLines = 2
             } else {
+                binding.tvFileName.maxLines = 1
                 binding.imgFileIcon.setImageResource(
                     if (file.isUserUploaded)
                         R.drawable.ic_outward

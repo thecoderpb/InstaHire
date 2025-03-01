@@ -70,8 +70,10 @@ class DashboardFragment : Fragment() {
             binding.tvError.apply {
                 text = error
                 visibility = if (error.isNotEmpty()) View.VISIBLE else View.GONE
+                binding.ivError.visibility = if (error.isNotEmpty()) View.VISIBLE else View.GONE
             }
             binding.recyclerView.visibility = View.GONE
+            binding.progressBar.visibility = View.GONE
         }
 
         // Observe loading status to show a loading indicator

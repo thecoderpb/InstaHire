@@ -6,9 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.files.FilesFragment">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="18dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/purple"
+        android:indeterminateTintMode="multiply"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/content"
         android:padding="12dp">
 
 
@@ -19,6 +32,7 @@
             android:contentDescription="@string/bolt_icon"
             android:src="@drawable/ic_bolt"
             android:visibility="gone"
+            app:tint="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

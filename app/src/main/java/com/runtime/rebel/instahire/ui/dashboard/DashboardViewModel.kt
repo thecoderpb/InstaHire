@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.runtime.rebel.instahire.model.JobItem
 import com.runtime.rebel.instahire.repository.home.HomeRepository
+import com.runtime.rebel.instahire.utils.removeHtmlTags
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject

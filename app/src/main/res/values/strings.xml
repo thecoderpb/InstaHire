@@ -39,4 +39,10 @@
     <string name="get_started_by_boosting_your_profile">Get started by boosting your profile</string>
     <string name="recent_user_files">Recent User Files</string>
     <string name="recent_generted_files">Recent Generated Files</string>
+    <string name="error_icon">error_icon</string>
+    <string name="software_engineer">Software Engineer</string>
+    <string name="google_llc">Google LLC</string>
+    <string name="san_francisco_ca_posted_12th_feb_2025">San Francisco, CA | Posted: 12th Feb 2025</string>
+    <string name="this_is_a_great_opportunity_for_a_skilled_android_developer">This is a great opportunity for a skilled Android developer...</string>
+    <string name="about_us">About Us</string>
 </resources>

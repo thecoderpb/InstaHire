@@ -110,6 +110,7 @@ class BoostProfileFragment : Fragment() {
             binding.rvUploadedFiles.visibility = if (files.isEmpty()) View.GONE else View.VISIBLE
             binding.tvRecent.visibility = if (files.isEmpty()) View.GONE else View.VISIBLE
             binding.divider.visibility = if (files.isEmpty()) View.GONE else View.VISIBLE
+            binding.progressBar.visibility = View.GONE
         }
     }
 

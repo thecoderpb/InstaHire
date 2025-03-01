@@ -17,6 +17,7 @@ import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.random.Random
 
 class HomeRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -54,7 +55,9 @@ class HomeRepository @Inject constructor(
 
 
     suspend fun uploadFile(uri: Uri, fileName: String?): String? {
-        val fname = fileName ?: (UUID.randomUUID().toString() + ".pdf")
+        val fname = fileName?.let {
+            it + "- ${Random.nextInt(0,100)}" + ".pdf"
+        }
         val storageRef = firebaseStorage.reference.child("users/${firebaseAuth.currentUser?.uid}/${fname}")
         return try {
             storageRef.putFile(uri).await()

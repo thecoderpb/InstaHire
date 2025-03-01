@@ -6,6 +6,8 @@ import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.runtime.rebel.instahire.databinding.ItemJobBinding
 import com.runtime.rebel.instahire.model.JobItem
+import com.runtime.rebel.instahire.utils.DateUtils
+import com.runtime.rebel.instahire.utils.removeHtmlTags
 
 class JobListAdapter(private val jobClickListener: (JobItem) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -13,7 +15,21 @@ class JobListAdapter(private val jobClickListener: (JobItem) -> Unit) :
     private var jobList = mutableListOf<JobItem>()
 
     fun setData(newJobs: List<JobItem>) {
-        jobList.addAll(newJobs)
+        newJobs.forEach {
+            jobList.add(
+                JobItem(
+                    it.id,
+                    it.role,
+                    it.text?.removeHtmlTags(),
+                    it.companyName,
+                    it.location,
+                    it.url,
+                    it.keywords,
+                    DateUtils.formatDate(it.datePosted),
+                    it.source
+                )
+            )
+        }
         notifyItemRangeChanged(0, jobList.size)
     }
 

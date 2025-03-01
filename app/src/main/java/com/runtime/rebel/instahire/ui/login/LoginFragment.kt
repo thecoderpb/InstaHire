@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.runtime.rebel.instahire.App
 import com.runtime.rebel.instahire.R
 import com.runtime.rebel.instahire.databinding.FragmentLoginBinding
+import com.runtime.rebel.instahire.ui.AboutActivity
 import com.runtime.rebel.instahire.ui.HomeActivity
 import timber.log.Timber
 import javax.inject.Inject
@@ -58,8 +59,8 @@ class LoginFragment : Fragment() {
             )
         }
 
-        binding.tvForgotPassword.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
+        binding.tvAboutUs.setOnClickListener {
+            startActivity(Intent(requireContext(), AboutActivity::class.java))
         }
 
         binding.tvRegister.setOnClickListener {

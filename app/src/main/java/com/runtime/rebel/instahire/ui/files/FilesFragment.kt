@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.runtime.rebel.instahire.App
 import com.runtime.rebel.instahire.databinding.FragmentFilesBinding
 import com.runtime.rebel.instahire.model.FileData
+import com.runtime.rebel.instahire.model.Result
 import com.runtime.rebel.instahire.ui.PdfViewerActivity
 import com.runtime.rebel.instahire.ui.boost.UploadedFilesAdapter
 import javax.inject.Inject
@@ -43,6 +44,25 @@ class FilesFragment : Fragment() {
 
 
         setupRecyclerView()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+
+        viewModel.uploadedStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
+                Result.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+                is Result.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+
+                Result.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -51,7 +71,8 @@ class FilesFragment : Fragment() {
         binding.rvUploadedFiles.adapter = userAdapter
 
         binding.rvGeneratedFiles.layoutManager = LinearLayoutManager(requireContext())
-        val generatedAdapter = UploadedFilesAdapter(::onCardClick) { file -> viewModel.deleteFile(file) }
+        val generatedAdapter =
+            UploadedFilesAdapter(::onCardClick) { file -> viewModel.deleteFile(file) }
         binding.rvGeneratedFiles.adapter = generatedAdapter
 
         viewModel.uploadedFiles.observe(viewLifecycleOwner) { files ->
@@ -61,13 +82,17 @@ class FilesFragment : Fragment() {
             userAdapter.submitList(userFiles)
             generatedAdapter.submitList(generatedFiles)
 
-            binding.rvUploadedFiles.visibility = if (userFiles.isEmpty()) View.GONE else View.VISIBLE
+            binding.rvUploadedFiles.visibility =
+                if (userFiles.isEmpty()) View.GONE else View.VISIBLE
             binding.tvRecent.visibility = if (userFiles.isEmpty()) View.GONE else View.VISIBLE
             binding.divider.visibility = if (userFiles.isEmpty()) View.GONE else View.VISIBLE
 
-            binding.rvGeneratedFiles.visibility = if (generatedFiles.isEmpty()) View.GONE else View.VISIBLE
-            binding.tvRecentGenerated.visibility = if (generatedFiles.isEmpty()) View.GONE else View.VISIBLE
-            binding.dividerTwo.visibility = if (generatedFiles.isEmpty()) View.GONE else View.VISIBLE
+            binding.rvGeneratedFiles.visibility =
+                if (generatedFiles.isEmpty()) View.GONE else View.VISIBLE
+            binding.tvRecentGenerated.visibility =
+                if (generatedFiles.isEmpty()) View.GONE else View.VISIBLE
+            binding.dividerTwo.visibility =
+                if (generatedFiles.isEmpty()) View.GONE else View.VISIBLE
 
             binding.tvEmptyFiles.visibility = if (files.isEmpty()) View.VISIBLE else View.GONE
             binding.ivBolt.visibility = if (files.isEmpty()) View.VISIBLE else View.GONE
